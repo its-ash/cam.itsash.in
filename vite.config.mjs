@@ -4,6 +4,7 @@ import wasm from 'vite-plugin-wasm';
 export default defineConfig({
   plugins: [wasm()],
   root: 'www',
+  base: './',
   server: {
     port: 5173,
     open: true,

@@ -22,6 +22,8 @@ wasm: ensure-rust
 
 build: clean wasm ensure-node
 	npm run build
+	echo "record.itsash.in" > docs/CNAME
+	touch docs/.nojekyll
 
 dev: wasm ensure-node
 	npm run dev
