@@ -1,0 +1,16 @@
+{
+  "name": "wasm-video-recorder",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "wasm": "wasm-pack build --target web --out-dir pkg",
+    "deploy": "make deploy"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "vite-plugin-wasm": "^3.3.0"
+  }
+}
