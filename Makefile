@@ -29,7 +29,8 @@ dev: wasm ensure-node
 	npm run dev
 
 serve: build
-	npx vite preview --out-dir docs --port 4173
+	@echo "Serving docs/ at http://localhost:4173"
+	cd docs && python3 -m http.server 4173
 
 deploy: build
 	@echo "Deploying to GitHub Pages (record.itsash.in)..."
