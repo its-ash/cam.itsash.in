@@ -78,8 +78,22 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Wait for any in-progress deployment
-        run: sleep 30
+      - name: Cancel stuck Pages deployments
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          echo "Checking for in-progress GitHub Pages deployments..."
+          for i in $(seq 1 6); do
+            PENDING=$(gh api "repos/$REPO/pages" --jq '.status' 2>/dev/null || echo "unknown")
+            echo "Attempt $i: Pages status = $PENDING"
+            if [ "$PENDING" != "building" ] && [ "$PENDING" != "queued" ]; then
+              echo "No stuck deployment. Proceeding."
+              break
+            fi
+            echo "Deployment in progress, waiting 30s..."
+            sleep 30
+          done
 
       - name: Deploy to GitHub Pages
         id: deployment
