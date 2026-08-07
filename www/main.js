@@ -3,7 +3,6 @@ import init, {
   start_recording,
   stop_recording,
   is_recording,
-  get_selected_codec,
   download_recording,
 } from '../pkg/wasm_video_recorder.js';
 
@@ -44,6 +43,10 @@ async function main() {
     }
     timerEl.classList.remove('active');
     setTimeout(() => { timerEl.style.display = 'none'; }, 2000);
+  }
+
+  function setStatus(msg) {
+    statusEl.textContent = msg;
   }
 
   try {
@@ -89,7 +92,6 @@ async function main() {
       downloadBtn.disabled = false;
       stopTimer();
       setStatus('Ready');
-      statusEl.classList.remove('recording');
     } catch (e) {
       setStatus(`Error: ${e}`);
     }
@@ -102,10 +104,6 @@ async function main() {
       setStatus(`Download error: ${e}`);
     }
   });
-
-  function setStatus(msg) {
-    statusEl.textContent = msg;
-  }
 
   window.addEventListener('beforeunload', async () => {
     if (is_recording()) {

@@ -97,10 +97,11 @@ fn create_recorder(state: Rc<RecorderState>, stream: &MediaStream) -> Result<(),
             for chunk in chunks.iter() {
                 arr.push(chunk);
             }
-            let result = Blob::new_with_u8_slice_sequence(&arr)
+            let result = Blob::new_with_blob_sequence(&arr)
                 .and_then(|blob| {
                     web_sys::Url::create_object_url_with_blob(&blob)
                         .and_then(|url| {
+                            download::store_blob_url(url.clone());
                             update_preview_and_download(&url, &blob)?;
                             Ok(())
                         })
@@ -133,7 +134,6 @@ fn create_recorder(state: Rc<RecorderState>, stream: &MediaStream) -> Result<(),
 fn update_preview_and_download(url: &str, blob: &Blob) -> Result<(), JsValue> {
     let window = web_sys::window().ok_or("no window")?;
     let document = window.document().ok_or("no document")?;
-    download::store_blob_url(url.to_string());
     if let Some(video) = document.get_element_by_id("preview")
         .and_then(|el| el.dyn_into::<HtmlVideoElement>().ok())
     {

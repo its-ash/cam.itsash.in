@@ -10,21 +10,21 @@ thread_local! {
 }
 
 const CODEC_PRIORITY: &[&str] = &[
+    "video/mp4;codecs=avc1.640034",
     "video/mp4;codecs=avc1.640028",
+    "video/mp4;codecs=avc1.4d4034",
     "video/mp4;codecs=h264",
     "video/mp4;codecs=avc1.42E01E",
     "video/mp4",
-    "video/webm;codecs=vp9",
-    "video/webm",
 ];
 
 const CODEC_LABELS: &[(&str, &str)] = &[
-    ("video/mp4;codecs=avc1.640028", "H.264 (AVC High)"),
+    ("video/mp4;codecs=avc1.640034", "H.264 (AVC High 5.1)"),
+    ("video/mp4;codecs=avc1.640028", "H.264 (AVC High 5.0)"),
+    ("video/mp4;codecs=avc1.4d4034", "H.264 (AVC Main 5.1)"),
     ("video/mp4;codecs=h264", "H.264 (base)"),
     ("video/mp4;codecs=avc1.42E01E", "H.264 (AVC Baseline)"),
     ("video/mp4", "MP4 (default)"),
-    ("video/webm;codecs=vp9", "VP9"),
-    ("video/webm", "WebM (default)"),
 ];
 
 pub fn detect_best_codec() {
@@ -68,11 +68,26 @@ pub fn optimal_bitrate() -> u32 {
     } else if mime.contains("vp9") {
         3_000_000
     } else if mime.contains("h264") || mime.contains("avc1") {
-        6_000_000
+        10_000_000
     } else if mime.contains("vp8") {
         4_000_000
     } else {
-        5_000_000
+        6_000_000
+    }
+}
+
+pub fn compressed_bitrate() -> u32 {
+    let mime = best_mime_type();
+    if mime.contains("av01") {
+        1_000_000
+    } else if mime.contains("vp9") {
+        1_200_000
+    } else if mime.contains("h264") || mime.contains("avc1") {
+        2_500_000
+    } else if mime.contains("vp8") {
+        1_500_000
+    } else {
+        2_000_000
     }
 }
 

@@ -2,7 +2,6 @@ mod utils;
 mod recorder;
 mod codec;
 mod download;
-mod enhance;
 
 use wasm_bindgen::prelude::*;
 
@@ -52,24 +51,3 @@ pub fn download_recording(filename: Option<String>) -> Result<(), JsValue> {
     download::download(filename)
 }
 
-#[wasm_bindgen]
-pub fn enhance_frame(
-    frame_data: &[u8],
-    width: u32,
-    height: u32,
-    sharpness: f32,
-    contrast: f32,
-    saturation: f32,
-) -> Result<Vec<u8>, JsValue> {
-    enhance::enhance_frame(frame_data, width, height, sharpness, contrast, saturation)
-        .map_err(|e| JsValue::from_str(&e.to_string()))
-}
-
-#[wasm_bindgen]
-pub fn get_enhance_defaults() -> JsValue {
-    let obj = js_sys::Object::new();
-    js_sys::Reflect::set(&obj, &"sharpness".into(), &enhance::default_sharpness().into());
-    js_sys::Reflect::set(&obj, &"contrast".into(), &enhance::default_contrast().into());
-    js_sys::Reflect::set(&obj, &"saturation".into(), &enhance::default_saturation().into());
-    obj.into()
-}
