@@ -17,6 +17,15 @@ pub fn store_blob_url(url: String) {
     });
 }
 
+pub fn discard() {
+    LAST_BLOB_URL.with(|u| {
+        if let Some(old) = u.borrow_mut().take() {
+            let _ = Url::revoke_object_url(&old);
+        }
+    });
+    log("Recording discarded.");
+}
+
 pub fn download(filename: Option<String>) -> Result<(), JsValue> {
     let window = web_sys::window().ok_or("no window")?;
     let document = window.document().ok_or("no document")?;

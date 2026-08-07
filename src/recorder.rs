@@ -19,11 +19,16 @@ thread_local! {
 struct RecorderState {
     recorder: RefCell<Option<MediaRecorder>>,
     stream: RefCell<Option<MediaStream>>,
+    recording_stream: RefCell<Option<MediaStream>>,
     chunks: RefCell<Vec<JsValue>>,
     recording: RefCell<bool>,
     on_stop_closure: RefCell<Option<Closure<dyn FnMut(Event)>>>,
     on_data_closure: RefCell<Option<Closure<dyn FnMut(BlobEvent)>>>,
     on_error_closure: RefCell<Option<Closure<dyn FnMut(Event)>>>,
+}
+
+pub fn set_recording_stream(stream: MediaStream) {
+    STATE.with(|state| state.recording_stream.borrow_mut().replace(stream));
 }
 
 pub fn init() -> Result<(), JsValue> {
@@ -39,20 +44,11 @@ pub fn start() -> Result<(), JsValue> {
             return Ok(());
         }
 
-        let window = web_sys::window().ok_or("no window")?;
-        let document = window.document().ok_or("no document")?;
-
-        let stream = if let Some(video) = document
-            .get_element_by_id("preview")
-            .and_then(|el| el.dyn_into::<HtmlVideoElement>().ok())
-        {
-            video.src_object()
-                .ok_or("No camera stream on preview element")?
-                .dyn_into::<MediaStream>()
-                .map_err(|_| "srcObject is not a MediaStream")?
-        } else {
-            return Err(JsValue::from("preview element not found"));
-        };
+        let stream = state
+            .recording_stream
+            .borrow()
+            .clone()
+            .ok_or("No recording stream set. Call set_recording_stream first.")?;
 
         state.stream.borrow_mut().replace(stream.clone());
         match create_recorder(state.clone(), &stream) {
@@ -137,6 +133,7 @@ fn update_preview_and_download(url: &str, blob: &Blob) -> Result<(), JsValue> {
     if let Some(video) = document.get_element_by_id("preview")
         .and_then(|el| el.dyn_into::<HtmlVideoElement>().ok())
     {
+        video.set_src_object(None);
         video.set_src(url);
     }
 
