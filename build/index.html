@@ -4,12 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rust WASM Video Recorder</title>
-  <script type="module" crossorigin src="./assets/index-CHKqGC_L.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-B8aRoh-4.css">
+  <script type="module" crossorigin src="./assets/index-BmxE7oIp.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-BHOtTuMp.css">
 </head>
 <body>
   <div class="video-wrapper">
     <video id="preview" autoplay muted playsinline></video>
+    <canvas id="output" class="output-canvas"></canvas>
   </div>
 
   <div id="info" class="info-panel"></div>
@@ -19,6 +20,9 @@
   <div id="timer" class="timer">00:00</div>
 
   <div class="toolbar">
+    <button id="blur-btn" class="icon-btn icon-blur" title="Toggle Background Blur" aria-label="Toggle background blur">
+      <svg viewBox="0 0 24 24" width="32" height="32"><path d="M12 2c-3.5 5-7 9-7 13a7 7 0 0014 0c0-4-3.5-8-7-13z" fill="currentColor"/></svg>
+    </button>
     <button id="start-btn" class="icon-btn icon-start" title="Start Recording" aria-label="Start recording">
       <svg viewBox="0 0 24 24" width="32" height="32"><circle cx="12" cy="12" r="10" fill="currentColor"/></svg>
     </button>
@@ -27,6 +31,9 @@
     </button>
     <button id="download-btn" class="icon-btn icon-download" title="Download" aria-label="Download" disabled>
       <svg viewBox="0 0 24 24" width="32" height="32"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button id="discard-btn" class="icon-btn icon-discard" title="Discard Recording" aria-label="Discard recording" disabled>
+      <svg viewBox="0 0 24 24" width="32" height="32"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
     </button>
   </div>
 
