@@ -32,11 +32,22 @@ async function main() {
   timerEl.style.display = 'none';
 
   let timerInterval = null;
+  let timerHideTimeout = null;
   let startTime = 0;
 
   function startTimer() {
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+    if (timerHideTimeout) {
+      clearTimeout(timerHideTimeout);
+      timerHideTimeout = null;
+    }
+    timerEl.textContent = '00:00';
     startTime = Date.now();
-    timerEl.style.display = 'block';
+    timerEl.style.display = 'flex';
+    void timerEl.offsetWidth;
     timerEl.classList.add('active');
     timerInterval = setInterval(() => {
       const elapsed = Math.floor((Date.now() - startTime) / 1000);
@@ -52,7 +63,27 @@ async function main() {
       timerInterval = null;
     }
     timerEl.classList.remove('active');
-    setTimeout(() => { timerEl.style.display = 'none'; }, 2000);
+    if (timerHideTimeout) {
+      clearTimeout(timerHideTimeout);
+    }
+    timerHideTimeout = setTimeout(() => {
+      timerEl.style.display = 'none';
+      timerHideTimeout = null;
+    }, 2000);
+  }
+
+  function resetTimer() {
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+    if (timerHideTimeout) {
+      clearTimeout(timerHideTimeout);
+      timerHideTimeout = null;
+    }
+    timerEl.classList.remove('active');
+    timerEl.style.display = 'none';
+    timerEl.textContent = '00:00';
   }
 
   function setStatus(msg) {
@@ -190,6 +221,9 @@ async function main() {
       stopBtn.style.display = 'flex';
       stopBtn.disabled = false;
       downloadBtn.style.display = 'none';
+      downloadBtn.disabled = true;
+      discardBtn.style.display = 'none';
+      discardBtn.disabled = true;
       startTimer();
       setStatus('● REC');
       statusEl.classList.add('recording');
@@ -235,6 +269,7 @@ async function main() {
     downloadBtn.disabled = true;
     discardBtn.style.display = 'none';
     discardBtn.disabled = true;
+    resetTimer();
     setStatus('Discarded');
     resumeLiveView();
   });
