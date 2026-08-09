@@ -15,6 +15,12 @@ async function main() {
   await init();
   init_recorder();
 
+  const loader = document.getElementById('wasm-loader');
+  if (loader) {
+    loader.classList.add('hidden');
+    setTimeout(() => loader.remove(), 500);
+  }
+
   const startBtn = document.getElementById('start-btn');
   const stopBtn = document.getElementById('stop-btn');
   const downloadBtn = document.getElementById('download-btn');

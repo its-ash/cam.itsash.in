@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cam.itsash.in/sitemap.xml

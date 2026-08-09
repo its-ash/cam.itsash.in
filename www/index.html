@@ -3,9 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#000000" />
   <link rel="icon" type="image/png" href="./favicon.png" />
-  <title>Rust WASM Video Recorder</title>
+  <title>Rust WASM Video Recorder — Browser-Based AV1/VP9/H.264 Capture</title>
+  <meta name="description" content="Record video directly in your browser with Rust + WebAssembly. Background blur, AV1/VP9/H.264 compression via WebCodecs, and instant download — no uploads, no servers." />
+  <meta name="keywords" content="video recorder, browser video capture, WebAssembly, Rust, WebCodecs, MediaRecorder, AV1, VP9, H.264, background blur, privacy, client-side recording" />
+  <meta name="author" content="its-ash" />
+  <meta name="robots" content="index, follow" />
+  <meta name="language" content="English" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="canonical" href="https://cam.itsash.in/" />
   <link rel="stylesheet" href="./styles.css" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Rust WASM Video Recorder" />
+  <meta property="og:description" content="Record video in your browser with Rust + WebAssembly. Background blur, AV1/VP9/H.264 compression, instant download — fully client-side." />
+  <meta property="og:url" content="https://cam.itsash.in/" />
+  <meta property="og:site_name" content="Rust WASM Video Recorder" />
+  <meta property="og:image" content="https://cam.itsash.in/favicon.png" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Rust WASM Video Recorder" />
+  <meta name="twitter:description" content="Record video in your browser with Rust + WebAssembly. Background blur, AV1/VP9/H.264 compression, instant download — fully client-side." />
+  <meta name="twitter:image" content="https://cam.itsash.in/favicon.png" />
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Rust WASM Video Recorder",
+    "url": "https://cam.itsash.in/",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "Web Browser",
+    "description": "Record video directly in your browser with Rust + WebAssembly. Background blur, AV1/VP9/H.264 compression via WebCodecs, and instant download — no uploads, no servers.",
+    "author": { "@type": "Person", "name": "its-ash", "url": "https://its-ash.github.io" },
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-F5J1KVJKGW"></script>
   <script>
@@ -17,6 +55,11 @@
   </script>
 </head>
 <body>
+  <div id="wasm-loader" class="wasm-loader">
+    <div class="wasm-spinner"></div>
+    <div class="wasm-loader-text">Loading WebAssembly…</div>
+  </div>
+
   <div class="video-wrapper">
     <video id="preview" autoplay muted playsinline></video>
     <canvas id="output" class="output-canvas"></canvas>
@@ -45,6 +88,8 @@
       <svg viewBox="0 0 24 24" width="32" height="32"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
     </button>
   </div>
+
+  <a href="https://its-ash.github.io" class="footer-credit" target="_blank" rel="noopener noreferrer">its-ash.github.io</a>
 
   <script type="module" src="./main.js"></script>
 </body>
