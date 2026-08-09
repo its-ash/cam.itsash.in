@@ -22,7 +22,7 @@ wasm: ensure-rust
 
 build: clean wasm ensure-node
 	npm run build
-	echo "record.itsash.in" > docs/CNAME
+	echo "cam.itsash.in" > docs/CNAME
 	touch docs/.nojekyll
 
 dev: wasm ensure-node
@@ -33,7 +33,7 @@ serve: build
 	cd docs && python3 -m http.server 4173
 
 deploy: build
-	@echo "Deploying to GitHub Pages (record.itsash.in)..."
+	@echo "Deploying to GitHub Pages (cam.itsash.in)..."
 	@if [ -d docs ]; then \
 		git add docs/; \
 		git commit -m "Deploy to GitHub Pages: $$(date +'%Y-%m-%d %H:%M')"; \
