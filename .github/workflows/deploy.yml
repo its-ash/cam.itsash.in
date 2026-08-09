@@ -30,6 +30,12 @@ jobs:
       - name: Add CNAME
         run: echo "cam.itsash.in" > build/CNAME
 
+      - name: Copy robots.txt
+        run: cp www/robots.txt build/robots.txt
+
+      - name: Copy sitemap.xml
+        run: cp www/sitemap.xml build/sitemap.xml
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
