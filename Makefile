@@ -6,7 +6,8 @@ RUSTUP  := $(shell command -v rustup 2> /dev/null)
 all: build
 
 clean:
-	rm -rf pkg docs target
+	rm -rf pkg docs
+	-cargo clean
 
 ensure-rust:
 	@command -v rustup >/dev/null 2>&1 || { echo "Install Rust: https://rustup.rs"; exit 1; }
@@ -22,6 +23,9 @@ wasm: ensure-rust
 
 build: clean wasm ensure-node
 	npm run build
+	rm -rf docs
+	mkdir -p docs
+	cp -r build/* docs/
 	echo "cam.itsash.in" > docs/CNAME
 	touch docs/.nojekyll
 
